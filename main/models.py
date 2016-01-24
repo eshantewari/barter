@@ -80,3 +80,8 @@ class Address(models.Model):
 	street = models.CharField(max_length = 100)
 	city = models.CharField(max_length = 100)
 	zip_code = models.CharField(max_length = 5)
+
+class Notification(models.Model):
+	to_user = models.ForeignKey(User)
+	from_user = models.ForeignKey(User)
+	item = models.ForeignKey(item)

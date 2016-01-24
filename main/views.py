@@ -11,7 +11,8 @@ from django.utils import timezone
 from django.template import RequestContext
 
 from .search import get_query
-from .models import Account, Category, Image, Item, SearchField
+from .models import User, Category, Image, Item, SearchField, Notification
+from .forms import UserProfileForm, CreateUserForm
 from random import shuffle
 
 # Create your views here.
@@ -46,7 +47,7 @@ def results(request):
                         items.append(item)
 
         items.shuffle()
-        return render(request, 'main/results.html', {'items':items})                                 
+        return render(request, 'main/results.html', {'items':items})
 
     else:
         found_entries = request.session['found_entries']
@@ -55,7 +56,7 @@ def results(request):
         items = []
         for field in search_fields: #Going through all search fields
             for entry in found_entries:
-                if entry == field: #If a search field match is found
+                if entry == field.text: #If a search field match is found
                     category = entry.category
                     users = category.users.all()
                     for client in users: #Go through all users who own something in category corresponding to that search field
@@ -64,12 +65,65 @@ def results(request):
                         for possession in user_owns:
                             for want in client_wants:
                                 #Then add all of the items of that client under the category searched for
-                                if want.id == possession.id:
+                                if want.pk == possession.pk:
                                     client_has = client.item_set.all()
-                                    category_id = category.id
+                                    category_id = category.pk
                                     for item in client_has:
-                                        if item.category.id == category_id:
+                                        if item.category.pk == category_id:
                                             items.append(item)
 
         items.shuffle()
         return render(request, 'main/results.html', {'items':items})
+
+def view_item(request, view_id):
+    item = get_object_or_404(Item, pk=view_id)
+
+    if request.method == 'POST':
+        notification = Notification()
+        notification.from_user = request.user
+        notification.to_user = item.owner
+        notification.item = item
+        notification.save()
+
+        return HttpResponseRedirect(reverse('main:confirm', args=(notification.pk,))) #Go to the results page
+
+    return render(request, 'main/view_item.html', {'item':item})
+
+def confirm(request, notification_id):
+    notification = get_object_or_404(Notification, pk = notification_id)
+    #if user wants to undo, delete notificatoin
+    return render(request, 'main/confirm.html', {'notification':notification})
+
+def view_notifications(request):
+    #View a user's notfications
+    return
+
+def make_transaction(request):
+    #exchange contact info, etc
+    return
+
+
+def create_user(request):
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user.save()
+    else:
+        form = CreateUserForm(instance = user)
+
+    return render(request, 'main/create_user.html', {'form':form})
+
+def user_profile(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(reverse('store:create_user')) #Go to the create user page
+
+    user = request.user
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance = user)
+        if form.is_valid():
+            user.save()
+    else:
+        form = UserProfileForm(instance = user)
+
+    return render(request, 'main/user_profile.html', {'username':username, 'reputation':reputation, 'form':form})
