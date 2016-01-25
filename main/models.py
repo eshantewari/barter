@@ -81,10 +81,6 @@ class Image(models.Model):
     img = models.ImageField(upload_to='item_images', blank=True, null=True)
     item = models.ForeignKey(Item)
 
-class SearchField(models.Model):
-    text = models.CharField(max_length = 100)
-    category = models.ForeignKey(Category)
-
 class Address(models.Model):
 	user = models.OneToOneField(User)
 	street = models.CharField(max_length = 100)
@@ -94,4 +90,6 @@ class Address(models.Model):
 class Notification(models.Model):
 	to_user = models.ForeignKey(User, related_name = "to_user")
 	from_user = models.ForeignKey(User, related_name = "from_user")
-	item = models.ForeignKey(Item)
+	to_user_item = models.ForeignKey(Item, related_name = "to_user_item")
+	from_user_item = models.ForeignKey(Item)
+	parent_notification = models.ForeignKey('self')

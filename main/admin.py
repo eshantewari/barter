@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import User, Category, SearchField, Item, Image, User, Address
+from .models import User, Category, Item, Image, User, Address
 
 class AddressInline(admin.TabularInline):
     model = Address
@@ -10,9 +10,6 @@ class AccountCategoryInline(admin.TabularInline):
     model = Category.users.through
     extra = 1
 
-class SearchFieldInline(admin.TabularInline):
-    model = SearchField
-    extra = 1
 
 class ItemInline(admin.TabularInline):
     model = Item

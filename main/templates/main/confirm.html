@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% block title %}Confirm{%endblock%}
+{% block content %}
+You are requesting a trade between your {{notification.from_user_item.name}} and {{notification.to_user.username}}'s {{notification.to_user_item.name}}.
+<br />
+Are you sure that you wish to proceed?
+
+<form action = "{%url 'main:confirm' notification.pk%}" method = "POST">
+     {% csrf_token %}
+    <input type = "radio" name = "confirm" value = "yes" checked="checked">Yes</br>
+    <input type = "radio" name = "confirm" value = "no">No</br>
+</form>
+
+{%endblock%}

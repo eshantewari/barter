@@ -1,0 +1,22 @@
+{% extends "main/base.html" %}
+{% block title %}Home{%endblock%}
+{% block content %}
+
+<ul>
+  <li>Username: {{username}}</li>
+  <li>{{first_name}} {{last_name}}</li>
+</ul>
+<br />
+{%if error%}{{error}}{%endif%}
+<br />
+User possessions:
+<br />
+
+<ul>
+  {%for item in items%}
+    <li><a href = "{%url 'main:view_item' item.pk}%}"></li>
+  {%endfor%}
+</ul>
+
+
+{%endblock%}

@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+{% block title %}View Item{%endblock%}
+{% block content %}
+<ul>
+  <li>{{item.name}}</li>
+  <li>{{item.description}}</li>
+  <li>{{item.owner}}</li>
+</ul>
+<br />
+<br />
+{%if logged_in%}
+{%if error%}{{error}}{%endif%}
+<form action = "{%url 'main:view_item' item.pk%}" method="POST">
+    {% csrf_token %}
+    These are the items that this item's owner may be interested in:
+    <ul>
+      {%for item in owner_interests%}
+        <li><input type = "radio" name = "item" value = "{{item.pk}}">{{item.name}}</input></li>
+      {%endfor%}
+    </ul>
+
+      These are other items that you own that this item's owner has not indicated an interest in:
+      <ul>
+        {%for item in other%}
+          <li><input type = "radio" name = "item" value = "{{item.pk}}">{{item.name}}</input></li>
+        {%endfor%}
+      </ul>
+    <input type = "Submit" value = "Trade for this item">
+</form>
+{%endif%}
+
+{%endblock%}

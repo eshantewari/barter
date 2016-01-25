@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+{% block title %}Home{%endblock%}
+{% block content %}
+
+<form action = "{%url 'main:user_profile' %}" method = "POST">
+    {% csrf_token %}
+
+</form>
+
+<ul>
+{%for notification_list in notifications%}
+<li><a href = "{%url 'main:respond_to_nofication' notification_list[0].pk}">Your {{notification_list[0].from_user_item.name}} for {{notification_list[0].to_user.username}}'s  {{notification_list[0].to_user_item.name}}</a></li>
+<li><ul>
+{%for i in range(1, len(notification_list))%}
+<li>Your {{notification_list[i].from_user_item.name}} for {{notification_list[i].to_user.username}}'s  {{notification_list[i].to_user_item.name}}</li>
+{%endfor%}
+</ul></li>
+{%endfor%}
+</ul>
+{%endblock%}
