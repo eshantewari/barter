@@ -56,8 +56,15 @@ class Category(models.Model):
     name = models.CharField(max_length = 400)
     description = models.TextField()
     users = models.ManyToManyField(User)
+
     class Meta:
         verbose_name_plural = "Categories"
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
 class Item(models.Model):
     name = models.CharField(max_length = 400)
@@ -65,6 +72,9 @@ class Item(models.Model):
     owner = models.ForeignKey(User)
     category = models.ForeignKey(Category)
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
 class Image(models.Model):
@@ -82,6 +92,6 @@ class Address(models.Model):
 	zip_code = models.CharField(max_length = 5)
 
 class Notification(models.Model):
-	to_user = models.ForeignKey(User)
-	from_user = models.ForeignKey(User)
-	item = models.ForeignKey(item)
+	to_user = models.ForeignKey(User, related_name = "to_user")
+	from_user = models.ForeignKey(User, related_name = "from_user")
+	item = models.ForeignKey(Item)

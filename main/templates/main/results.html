@@ -1,0 +1,10 @@
+{% extends "main/base.html" %}
+{% block title %}Results{%endblock%}
+{% block content %}
+
+<ul>
+  {%for item in items%}
+  <li>{{item.name}}</li>
+  {%endfor%}
+</ul>
+{%endblock%}

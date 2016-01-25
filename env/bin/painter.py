@@ -1,4 +1,4 @@
-#!/Users/eshan/Documents/webprojects/sga/env/bin/python3
+#!/Users/eshan/Documents/webprojects/barter/env/bin/python3
 #
 # The Python Imaging Library
 # $Id$
@@ -67,6 +67,10 @@ class PaintCanvas(Canvas):
 # main
 
 root = Tk()
+
+if len(sys.argv) != 2:
+    print("Usage: painter file")
+    sys.exit(1)
 
 im = Image.open(sys.argv[1])
 

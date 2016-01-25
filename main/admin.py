@@ -45,11 +45,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class ItemAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None,               {'fields': ['name','owner','description']}),
+        (None,               {'fields': ['name','owner','description', 'category']}),
     ]
 
     inlines = [ImageInline]
-    list_display = ('name', 'owner')
+    list_display = ('name', 'owner', 'category')
     list_filter = ['name']
     search_fields = ['name']
 

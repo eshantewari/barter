@@ -1,8 +1,13 @@
-<h1>Welcome!</h1>
-<form method="get" action="/search/">
+{% extends "main/base.html" %}
+{% block title %}Home{%endblock%}
+{% block content %}
+<div class="ui-widget">
+  <label for="drugs">Get Money: </label>
+  <form action = "{%url 'main:index' %}" method = "POST">
+     {% csrf_token %}
+    <input id="drugs" name = "drugs">
+    <input type = "submit" value = "Search">
+  </form>
+</div>
 
-  <label for="id_q">Search:</label>
-  <input type="text" name="q" id="id_q"/>
-  <input type="submit" value="Submit"/>
-
-</form>
+{%endblock%}
