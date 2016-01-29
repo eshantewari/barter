@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% block title %}Confirm Deletion{%endblock%}
+{% block content %}
+You are deleting the exchange with the latest proposal of your {{notification.from_user_item.name}} for {{notification.to_user.username}}'s {{notification.to_user_item.name}} in its entirety.
+<br />
+Are you sure that you wish to proceed?
+
+<form action = "{%url 'main:confirm_deletion' notification.pk%}" method = "POST">
+     {% csrf_token %}
+    <input type = "radio" name = "confirm" value = "yes" checked="checked">Yes</br>
+    <input type = "radio" name = "confirm" value = "no">No</br>
+</form>
+
+{%endblock%}

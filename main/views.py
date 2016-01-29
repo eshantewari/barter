@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.template import RequestContext
 
 from .models import User, Category, Image, Item, Notification
-from .forms import UserProfileForm, CreateUserForm
+from .forms import UserProfileForm, CreateUserForm, AddressForm
 from random import shuffle
 
 import json
@@ -19,13 +19,16 @@ import json
 # Create your views here.
 
 def index(request):
+    message = ''
+    if request.session['message']:
+        message = request.session['message']
     if request.method == 'POST':
         data = request.POST.get('drugs')
         found_entries = Item.objects.get(name = data)
         item_id = found_entries.pk
         return HttpResponseRedirect(reverse("main:results", args = (item_id,)))
 
-    return render(request, 'main/index.html')
+    return render(request, 'main/index.html', {'message':message})
 
 def get_drugs(request):
     if request.is_ajax():
@@ -120,7 +123,7 @@ def confirm(request, notification_id):
             return HttpResponseRedirect(reverse('main:index'))
         else:
             notification.delete()
-            request.session['confirm_message'] = "You have cancelled your request of "+notification.to_user_item.name+" in exchange for "+notification.from_user_item.name
+            request.session['message'] = "You have cancelled your request of "+notification.to_user_item.name+" in exchange for "+notification.from_user_item.name
             return HttpResponseRedirect(reverse('main:index'))
     return render(request, 'main/confirm.html', {'notification':notification})
 
@@ -132,61 +135,47 @@ def respond_to_notification(request, notification_id):
     while not notification.parent_notification is None:
         notification = notification.parent_notification
         notification_history.append(notification)
-
-    interested_in = []
-    other = []
-
-    user_items = request.user.item_set.all()
-    owner_interests = notification.to_user.category_set.all()
-    for item in user_items:
-        for interest in owner_interests:
-            if item.category.pk == interest.pk:
-                interested_in.append(c_item)
-                break
-        other.append(item)
-
-
     client_items = notification.to_user.item_set.all()
-    error = ''
     if request.method == 'POST':
         if 'accept' in request.POST:
             return HttpResponseRedirect(reverse('main:make_transaction', args=(notification.pk,)))
-        else if 'delete' in request.POST:
+        elif 'delete' in request.POST:
             return
-        else if 'suggest' in request.POST:
-            if not request.POST.get('item1'):
-                error = error+"You did not select an item from your possessions.  "
-            if not request.POST.get('item2'):
-                error = error+"You did not select an item from your trade associate\'s possessions."
-            else:
-                item1 = Item.objects.get(pk = request.POST.get('item1'))
-                item2 = Item.objects.get(pk = request.POST.get('item2'))
-                new_notification = Notification()
-                new_notification.to_user = notification.to_user
-                new_notification.from_user = request.user
-                new_notification.to_user_item = item2
-                new_notification.from_user_item = item1
-                new_notification.parent_notification = notification
-                new_notification.save()
-                return HttpResponseRedirect(reverse('main:user_profile'))
 
-    return render(request, 'main/respond_to_notification.html', {'notifications':notification_history, 'owner_interests':owner_interests, 'other':other, 'client_items':client_items, 'error':error})
+    return render(request, 'main/respond_to_notification.html', {'notifications':notification_history, 'client_items':client_items})
+
+@login_required
+def confirm_delete(request, notification_id):
+    notification = get_object_or_404(Notification, pk = notification_id)
+    if request.method == 'POST':
+        data = request.POST.get('confirm')
+        if data == 'yes':
+            return HttpResponseRedirect(reverse('main:index'))
+        else:
+            notification.delete()
+            request.session['message'] = "You have cancelled your request of "+notification.to_user_item.name+" in exchange for "+notification.from_user_item.name
+            return HttpResponseRedirect(reverse('main:index'))
+    return render(request, 'main/confirm_delete.html', {'notification':notification})
+
 
 def create_user(request):
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            user.save()
+        user_form = CreateUserForm(request.POST)
+        address_form = AddressForm(request.POST)
+        if user_form.is_valid() and address_form.is_valid():
+            return #create User
     else:
-        form = CreateUserForm(instance = user)
+        user_form = CreateUserForm()
+        address_form = AddressForm()
 
-    return render(request, 'main/create_user.html', {'form':form})
+    return render(request, 'main/create_user.html', {'user_form':user_form,'address_form':address_form})
 
 
 @login_required
 def user_profile(request):
     user_notifications = request.user.notification_set.all()
     user = request.user
+    address = user.address
     notifications = []
     for notification in user_notifications:
         notification_history = []
@@ -196,14 +185,17 @@ def user_profile(request):
             notification_history.append(notification)
         notifications.append(notification_history)
 
-    if request.method == 'POST':
-        user_form = UserProfileForm(request.POST, instance = user)
-        if form.is_valid():
-            user.save()
-    else:
-        user_form = UserProfileForm(instance = user)
+    user_form = UserProfileForm(instance = user)
+    address_form = AddressForm(instance = address)
 
-    return render(request, 'main/user_profile.html', {'username':username, 'reputation':reputation, 'user_form':user_form, 'notifications':notifications, 'user':user})
+    if request.method == 'POST':
+        user_form = UserProfileForm(request.POST, instnace = user)
+        address_form = AddressForm(request.POST, instance = address)
+        if user_form.is_valid() and address_form.is_valid():
+            user_form.save()
+            address_form.save()
+
+    return render(request, 'main/user_profile.html', {'username':username, 'reputation':reputation, 'user_form':user_form, 'address_form':address_form, 'notifications':notifications, 'user':user})
 
 def view_other_profile(request, user_id):
     user = get_object_or_404(User, pk = user_id)

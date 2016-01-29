@@ -1,8 +1,10 @@
 {% extends "main/base.html" %}
 {% block title %}Home{%endblock%}
 {% block content %}
-<form action = "{%url 'main:user_profile' %}" method = "POST">
-    {% csrf_token %}
-
+<form action = "{%url 'main:create_user'%}" method = 'POST'>
+  {% csrf_token %}
+  {{ user_form.as_p }}
+  {{ address_form.as_p }}
+  <input type = "submit" value = "Create User" />
 </form>
 {%endblock%}

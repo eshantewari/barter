@@ -12,6 +12,30 @@ History:
 {%endfor%}
 </ul>
 
+<br />
+<br />
+If this is an acceptable trade, click below to proceed to the step of exchanging information.
+
+<form action = "{%url 'main:respond_to_notification' notication.pk %}" method = 'POST'>
+  {% csrf_token %}
+  <input type = "submit" value = "Accept Latest Exchange" name = 'accept' />
+</form>
+
+<br />
+
+Otherwise, have a look at the other items that your trade associate owns.  If none of them appeal to you, simply delete the exchange thread.
+<br />
+<ul>
+{%for item in items%}
+<li><a href = "{%url 'main:view_item' item.pk %}">{{item.name}}</a></li>
+{%endfor%}
+</ul>
+<br />
+
+<form action = "{%url 'main:respond_to_notification' notication.pk %}" method = 'POST'>
+  {% csrf_token %}
+  <input type = "submit" value = "Accept Latest Exchange" name = 'accept' />
+</form>
 
 
 {%endblock%}
