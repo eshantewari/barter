@@ -1,31 +1,95 @@
 {% extends "main/base.html" %}
 {% block title %}View Item{%endblock%}
+{%block specific%}
+
+<style type="text/css">
+#list_container {
+  width:75%;
+  background:#FFFFCC;
+}
+.items_list {
+  float:left;
+  width:49.9%;
+}
+.items_list div {border:1px solid #000}
+</style>
+
+{%endblock%}
+{%block searchbar%}
+
+<div class = "ui-widget" id="wrapper" >
+      <form action = "{%url 'main:index' %}" method = "POST" >
+         {% csrf_token %}
+        <input type="text" id="drugs" name="drugs"/>
+        <input type="submit" value="Search"/>
+      </form>
+  </div><!-- #wrapper -->
+
+{%endblock%}
 {% block content %}
-<ul>
-  <li>{{item.name}}</li>
-  <li>{{item.description}}</li>
-  <li>{{item.owner}}</li>
-</ul>
+<div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 600px; height: 300px; overflow: hidden; visibility: hidden;">
+  <!-- Loading Screen -->
+  <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
+    <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+    <div style="position:absolute;display:block;background:url('/static/img/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
+  </div>
+  <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 600px; height: 300px; overflow: hidden;">
+    {%for image in images%}
+    <div data-p="112.50" style="display: none;">
+      <a href="{%url 'main:view_item' item.pk %}"><img data-u="image" src="{{image.img.url}}" /></a>
+    </div>
+    {%endfor%}
+  </div>
+  <!-- Bullet Navigator -->
+  <div data-u="navigator" class="jssorb01" style="bottom:16px;right:16px;">
+    <div data-u="prototype" style="width:12px;height:12px;"></div>
+  </div>
+  <!-- Arrow Navigator -->
+  <span data-u="arrowleft" class="jssora02l" style="top:0px;left:8px;width:55px;height:55px;" data-autocenter="2"></span>
+  <span data-u="arrowright" class="jssora02r" style="top:0px;right:8px;width:55px;height:55px;" data-autocenter="2"></span>
+  <a href="http://www.jssor.com" style="display:none">Slideshow Maker</a>
+</div>
+
+
+<h3>{{item.name}}</h3>
+<p>{{item.owner}}</p>
+<br />
+<p>{{item.description}}</p>
+
 <br />
 <br />
 {%if logged_in%}
 {%if error%}{{error}}{%endif%}
-<form action = "{%url 'main:view_item' item.pk%}" method="POST">
-    {% csrf_token %}
-    These are the items that this item's owner may be interested in:
-    <ul>
-      {%for item in owner_interests%}
-        <li><input type = "radio" name = "item" value = "{{item.pk}}">{{item.name}}</input></li>
-      {%endfor%}
-    </ul>
 
-      These are other items that you own that this item's owner has not indicated an interest in:
-      <ul>
-        {%for item in other%}
+  On the left are items that you own that this item's owner may be interested in,
+  and on the right are other items that you own that this item's owner has not indicated
+  an interest in.
+
+<form action = "{%url 'main:view_item' item.pk%}" method="POST">
+  {% csrf_token %}
+  <div id="list_container">
+    <div class="items_list">
+      <div>
+        <ul>
+          {%for item in interested_in%}
           <li><input type = "radio" name = "item" value = "{{item.pk}}">{{item.name}}</input></li>
-        {%endfor%}
-      </ul>
-    <input type = "Submit" value = "Trade for this item">
+          {%endfor%}
+        </ul>
+      </div>
+    </div>
+
+    <div class="items_list">
+      <div>
+        <ul>
+          {%for item in other%}
+          <li><input type = "radio" name = "item" value = "{{item.pk}}">{{item.name}}</input></li>
+          {%endfor%}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <input type = "submit" value = "Request a Trade">
 </form>
 {%endif%}
 

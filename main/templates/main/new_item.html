@@ -1,0 +1,17 @@
+{% extends "main/base.html" %}
+{% block title %}New Item{%endblock%}
+{% block content %}
+{{error}}
+<div class = "ui-widget" >
+<form action = "{%url 'main:new_item'%}" method = "POST">
+     {% csrf_token %}
+     {{item_form.as_p}}
+     <input type="text" id="categories" name="categories"/>
+     <input type="submit" value="Create Item"/>
+
+</form>
+
+</div><!-- #wrapper -->
+
+Category not listed?  Request to create a new one: <a href = "#">Request New Category</a>
+{%endblock%}

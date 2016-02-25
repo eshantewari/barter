@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--[if IE]>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <![endif]-->
+  <title>{%block title%}{%endblock%}</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+  <script src="/static/js/inline_edit.js"></script>
+  <script src="/static/js/search.js"></script>
+
+  <style>
+      .ui-autocomplete {
+        max-height: 100px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+      }
+      /* IE 6 doesn't support max-height
+      * we use height instead, but this forces the menu to always be this tall
+      */
+      * html .ui-autocomplete {
+        height: 100px;
+      }
+  </style>
+  <!--REQUIRED STYLE SHEETS-->
+  <!-- BOOTSTRAP CORE STYLE CSS -->
+  <link href="/static/css/bootstrap.css" rel="stylesheet" />
+  <!-- FONTAWESOME STYLE CSS -->
+  <link href="/static/css/font-awesome.min.css" rel="stylesheet" />
+  <!-- VEGAS STYLE CSS -->
+  <link href="/static/scripts/vegas/jquery.vegas.min.css" rel="stylesheet" />
+  <!-- CUSTOM STYLE CSS -->
+  <link href="/static/css/style.css" rel="stylesheet" />
+  <!-- GOOGLE FONT -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+
+  <!--Header section  -->
+  <div class="container" id="home">
+    <div class="row text-center">
+      <div class="col-md-12" >
+        <h1 class="head-main">  NOW OR NEVER</h1>
+        <h2 class="head-sub-main"> Lorem ipsum dolor</h2>
+        <h3 class="head-last"> Lorem ipsum dolor sit ametLorem ipsum dolor sit amet</h3>
+
+      </div>
+
+
+    </div>
+  </div>
+  <!--End Header section  -->
+
+  <!-- Navigation -->
+  <nav class="navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="htttp://www.binarytheme.com">YOUR LOGO </a>
+      </div>
+      <!-- Collect the nav links for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="#">HOME</a>
+          </li>
+          <li><a href="#">ABOUT</a>
+          </li>
+          <li><a href="#">TEAM</a>
+          </li>
+          <li><a href="#">PRICING</a>
+          </li>
+          <li><a href="#">SERVICES</a>
+          </li>
+          <li><a href="#">CONTACT</a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+  </nav>
+  <!--End Navigation -->
+
+  <!--About Section-->
+  <section class="for-full-back color-white " id="about"  >
+    <div class="container" >
+
+
+      <div class="row text-center g-pad-bottom" >
+        <div class="col-md-12">
+            {%block content%}{%endblock%}
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--End About Section-->
+
+  <!--footer Section -->
+  <div  class="for-full-back "  id="footer" >
+
+
+    2014 www.yourdomain.com | All Right Reserved
+
+  </div>
+  <!--End footer Section -->
+  <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
+  <!-- CORE JQUERY  -->
+  <script src="/static/plugins/jquery-1.10.2.js"></script>
+  <!-- BOOTSTRAP CORE SCRIPT   -->
+  <script src="/static/plugins/bootstrap.js"></script>
+  <!-- VEGAS SLIDESHOW SCRIPTS -->
+  <script src="/static/plugins/vegas/jquery.vegas.min.js"></script>
+  <!-- CUSTOM SCRIPTS -->
+  <script src="/static/js/custom.js"></script>
+
+</body>
+</html>

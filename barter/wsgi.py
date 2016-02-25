@@ -14,3 +14,6 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "barter.settings")
 
 application = get_wsgi_application()
+
+#import barter.monitor
+#barter.monitor.start(interval=1.0)

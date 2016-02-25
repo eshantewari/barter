@@ -1,10 +1,36 @@
 {% extends "main/base.html" %}
 {% block title %}Results{%endblock%}
-{% block content %}
+{%block searchbar%}
 
-<ul>
-  {%for item in items%}
-  <li><a href = "{%url 'main:view_item' item.pk}">{{item.name}}</a></li>
-  {%endfor%}
-</ul>
+<div class = "ui-widget" id="wrapper" >
+      <form action = "{%url 'main:index' %}" method = "POST" >
+         {% csrf_token %}
+        <input type="text" id="drugs" name="drugs"/>
+        <input type="submit" value="Search"/>
+      </form>
+  </div><!-- #wrapper -->
+
+{%endblock%}
+
+{% block content %}
+<br />
+<br />
+<br />
+
+<!--Effect: Left to Right -->
+{%for item in items%}
+<div class="pic">
+  <a href = "{%url 'main:view_item' item.pk %}">
+    <img src="{{item.image_set.first().img.url}}" class="pic-image" alt="{{item.name}}"/>
+    <span class="pic-caption left-to-right">
+        <!--<h1 class="pic-title">Left to Right</h1>-->
+        <p>{{item.name}}</p>
+    </span>
+</div>
+</a>
+{%endfor%}
+
+<script>
+  document.addEventListener("touchstart", function(){}, true);
+</script>
 {%endblock%}

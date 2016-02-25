@@ -12,6 +12,15 @@
 User possessions:
 <br />
 
+<!--Effect: Left to Right -->
+<div class="pic">
+    <img src="/static/img/003.jpg" class="pic-image" alt="Pic"/>
+    <span class="pic-caption left-to-right">
+        <h1 class="pic-title">Left to Right</h1>
+        <p>Hi, this is a simple example =D</p>
+    </span>
+</div>
+
 <ul>
   {%for item in items%}
     <li><a href = "{%url 'main:view_item' item.pk}%}"></li>

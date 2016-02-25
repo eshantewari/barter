@@ -4,3 +4,10 @@ $(function() {
     minLength: 1,
   });
 });
+
+$(function() {
+  $("#categories").autocomplete({
+    source: "/categories/",
+    minLength: 1,
+  });
+});

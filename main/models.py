@@ -42,6 +42,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = ['email']
 
+	profile_pic = models.ImageField(upload_to='profile_pics')
+
 
 	def get_full_name(self):
 		return self.full_name
@@ -79,7 +81,7 @@ class Item(models.Model):
 
 class Image(models.Model):
     img = models.ImageField(upload_to='item_images', blank=True, null=True)
-    item = models.ForeignKey(Item)
+    item = models.ForeignKey(Item, blank = True, null = True)
 
 class Address(models.Model):
 	user = models.OneToOneField(User)

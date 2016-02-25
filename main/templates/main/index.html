@@ -1,13 +1,66 @@
 {% extends "main/base.html" %}
 {% block title %}Home{%endblock%}
-{% block content %}
-<div class="ui-widget">
-  <label for="drugs">Get Money: </label>
-  <form action = "{%url 'main:index' %}" method = "POST">
-     {% csrf_token %}
-    <input id="drugs" name = "drugs">
-    <input type = "submit" value = "Search">
-  </form>
+{%block header%}
+<!--Header section  -->
+<div class="container" id="home">
+  <div class="row text-center">
+    <div class="col-md-12" >
+      <h1 class="head-main">Trade On</h1>
+      <br />
+      <h2 class="head-sub-main">
+        The Item Lives on in the Hands of your Community
+      </h2>
+      <!--<h3 class="head-last"> Lorem ipsum dolor sit ametLorem ipsum dolor sit amet</h3>-->
+      <br />
+      <br />
+      <div class = "ui-widget" id="wrapper" >
+        <form action = "{%url 'main:index' %}" method = "POST" >
+          {% csrf_token %}
+          <input type="text" id="drugs" name="drugs"/>
+          <input type="submit" value="Search"/>
+        </form>
+      </div><!-- #wrapper -->
+      <br />
+      <br />
+
+    </div>
+  </div>
+</div>
+<!--End Header section  -->
+<br />
+<br />
+<br />
+{%endblock%}
+
+{%block content%}
+<br />
+<br />
+{{message}}
+<br />
+<br />
+<div id="jssor_1" style="position: relative; margin: 0 auto; top: 0px; left: 0px; width: 600px; height: 300px; overflow: hidden; visibility: hidden;">
+  <!-- Loading Screen -->
+  <div data-u="loading" style="position: absolute; top: 0px; left: 0px;">
+    <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
+    <div style="position:absolute;display:block;background:url('/static/img/loading.gif') no-repeat center center;top:0px;left:0px;width:100%;height:100%;"></div>
+  </div>
+  <div data-u="slides" style="cursor: default; position: relative; top: 0px; left: 0px; width: 600px; height: 300px; overflow: hidden;">
+    {%for item in items%}
+    <div data-p="112.50" style="display: none;">
+      <a href="{%url 'main:view_item' item.pk %}"><img data-u="image" src="{{item.image_set.first().img.url}}" /></a>
+      <div data-u="caption" data-t="0" style="position: absolute; top: 320px; left: 30px; width: 350px; height: 30px; background-color: rgba(235,81,0,0.5); font-size: 20px; color: #ffffff; line-height: 30px; text-align: center;">{{item.name}}</div>
+    </div>
+    {%endfor%}
+  </div>
+  <!-- Bullet Navigator -->
+  <div data-u="navigator" class="jssorb01" style="bottom:16px;right:16px;">
+    <div data-u="prototype" style="width:12px;height:12px;"></div>
+  </div>
+  <!-- Arrow Navigator -->
+  <span data-u="arrowleft" class="jssora02l" style="top:0px;left:8px;width:55px;height:55px;" data-autocenter="2"></span>
+  <span data-u="arrowright" class="jssora02r" style="top:0px;right:8px;width:55px;height:55px;" data-autocenter="2"></span>
+  <a href="http://www.jssor.com" style="display:none">Slideshow Maker</a>
 </div>
 
+<!-- #endregion Jssor Slider End -->
 {%endblock%}
